@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2020-10-09 00:10+0000\n"
-"Last-Translator: Artem <KovalevArtem.ru@gmail.com>\n"
+"PO-Revision-Date: 2021-01-09 15:32+0000\n"
+"Last-Translator: Nt0G <nt0gggg@gmail.com>\n"
 "Language-Team: Russian <https://hosted.weblate.org/projects/openwrt/"
 "luciapplicationshttps-dns-proxy/ru/>\n"
 "Language: ru\n"
@@ -9,9 +9,9 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Weblate 4.3-dev\n"
+"X-Generator: Weblate 4.4.1-dev\n"
 
-#: applications/luci-app-https-dns-proxy/luasrc/model/cbi/https-dns-proxy.lua:72
+#: applications/luci-app-https-dns-proxy/luasrc/model/cbi/https-dns-proxy.lua:73
 msgid "%s is not installed or not found"
 msgstr "%s не установлен или не найден"
 
@@ -29,15 +29,15 @@ msgstr "AliDNS"
 
 #: applications/luci-app-https-dns-proxy/luasrc/https-dns-proxy/providers/ca.cira.canadianshield.family.lua:3
 msgid "CIRA Canadian Shield (Family)"
-msgstr ""
+msgstr "CIRA Canadian Shield (Семья)"
 
 #: applications/luci-app-https-dns-proxy/luasrc/https-dns-proxy/providers/ca.cira.canadianshield.private.lua:3
 msgid "CIRA Canadian Shield (Private)"
-msgstr ""
+msgstr "CIRA Canadian Shield (Личный)"
 
 #: applications/luci-app-https-dns-proxy/luasrc/https-dns-proxy/providers/ca.cira.canadianshield.protected.lua:3
 msgid "CIRA Canadian Shield (Protected)"
-msgstr ""
+msgstr "CIRA Canadian Shield (Защищённый)"
 
 #: applications/luci-app-https-dns-proxy/luasrc/https-dns-proxy/providers/org.cleanbrowsing.doh-adult.lua:3
 msgid "CleanBrowsing (Adult Filter)"
@@ -53,21 +53,26 @@ msgstr "CleanBrowsing (Фильтр безопасности)"
 
 #: applications/luci-app-https-dns-proxy/luasrc/https-dns-proxy/providers/com.cloudflare-dns.lua:3
 msgid "Cloudflare"
-msgstr "CloudFlare"
+msgstr "Cloudflare"
 
 #: applications/luci-app-https-dns-proxy/luasrc/https-dns-proxy/providers/com.cloudflare-dns.family.lua:3
 msgid "Cloudflare (Family Protection)"
-msgstr ""
+msgstr "Cloudflare (Семейная защита)"
 
 #: applications/luci-app-https-dns-proxy/luasrc/https-dns-proxy/providers/com.cloudflare-dns.security.lua:3
+#, fuzzy
 msgid "Cloudflare (Security Protection)"
-msgstr ""
+msgstr "Cloudflare (Защита безопасности)"
+
+#: applications/luci-app-https-dns-proxy/luasrc/model/cbi/https-dns-proxy.lua:126
+msgid "Configuration"
+msgstr "Конфигурация"
 
 #: applications/luci-app-https-dns-proxy/luasrc/controller/https-dns-proxy.lua:4
 msgid "DNS HTTPS Proxy"
 msgstr "Прокси-сервер DNS HTTPS"
 
-#: applications/luci-app-https-dns-proxy/luasrc/model/cbi/https-dns-proxy.lua:106
+#: applications/luci-app-https-dns-proxy/luasrc/model/cbi/https-dns-proxy.lua:107
 msgid "DNS HTTPS Proxy Settings"
 msgstr "Настройки прокси-сервера DNS HTTPS"
 
@@ -77,7 +82,7 @@ msgstr "DNS.SB"
 
 #: applications/luci-app-https-dns-proxy/luasrc/https-dns-proxy/providers/pub.doh.lua:3
 msgid "DNSPod.cn Public DNS"
-msgstr ""
+msgstr "Публичное DNS DNSPod.cn"
 
 #: applications/luci-app-https-dns-proxy/luasrc/https-dns-proxy/providers.disabled/ch.digitale-gesellschaft.dns.lua:3
 msgid "Digitale Gesellschaft"
@@ -87,11 +92,15 @@ msgstr "Digitale Gesellschaft"
 msgid "Disable"
 msgstr "Отключить"
 
+#: applications/luci-app-https-dns-proxy/luasrc/model/cbi/https-dns-proxy.lua:134
+msgid "Do not update configs"
+msgstr "Не обновлять настройки"
+
 #: applications/luci-app-https-dns-proxy/luasrc/view/https-dns-proxy/buttons.htm:54
 msgid "Enable"
 msgstr "Включить"
 
-#: applications/luci-app-https-dns-proxy/luasrc/model/cbi/https-dns-proxy.lua:27
+#: applications/luci-app-https-dns-proxy/luasrc/model/cbi/https-dns-proxy.lua:28
 msgid "For more information on different options check"
 msgstr "Для получения дополнительной информации о различных опциях, проверьте"
 
@@ -99,9 +108,23 @@ msgstr "Для получения дополнительной информац�
 msgid "Google"
 msgstr "Google"
 
+#: applications/luci-app-https-dns-proxy/root/usr/share/rpcd/acl.d/luci-app-https-dns-proxy.json:3
+msgid "Grant UCI and file access for luci-app-https-dns-proxy"
+msgstr "Предоставить luci-app-https-dns-proxy доступ к UCI и файлам"
+
 #: applications/luci-app-https-dns-proxy/luasrc/model/cbi/https-dns-proxy.lua:126
+msgid ""
+"If update DNSMASQ config is selected, when you add/remove any instances "
+"below, they will be used to override the 'DNS forwardings' section of %sDHCP "
+"and DNS%s (%smore information%s)."
+msgstr ""
+"Если выбрана опция «Обновление настроек DNSMASQ», добавляемые ниже записи "
+"будут перезаписывать настройки %sDHCP и DNS%s (%sбольше информации%s)."
+
+#: applications/luci-app-https-dns-proxy/luasrc/model/cbi/https-dns-proxy.lua:138
+#, fuzzy
 msgid "Instances"
-msgstr "Примеры"
+msgstr "Записи"
 
 #: applications/luci-app-https-dns-proxy/luasrc/https-dns-proxy/providers/gr.libredns.doh.lua:3
 msgid "LibreDNS"
@@ -111,11 +134,11 @@ msgstr "LibreDNS"
 msgid "LibreDNS (No Ads)"
 msgstr "LibreDNS (без рекламы)"
 
-#: applications/luci-app-https-dns-proxy/luasrc/model/cbi/https-dns-proxy.lua:160
+#: applications/luci-app-https-dns-proxy/luasrc/model/cbi/https-dns-proxy.lua:172
 msgid "Listen address"
 msgstr "Адрес"
 
-#: applications/luci-app-https-dns-proxy/luasrc/model/cbi/https-dns-proxy.lua:173
+#: applications/luci-app-https-dns-proxy/luasrc/model/cbi/https-dns-proxy.lua:185
 msgid "Listen port"
 msgstr "Порт"
 
@@ -133,11 +156,11 @@ msgstr "OpenDNS"
 
 #: applications/luci-app-https-dns-proxy/luasrc/https-dns-proxy/providers/com.opendns.familyshield.doh.lua:3
 msgid "OpenDNS (Family Shield)"
-msgstr ""
+msgstr "OpenDNS (Семейная защита)"
 
-#: applications/luci-app-https-dns-proxy/luasrc/model/cbi/https-dns-proxy.lua:177
+#: applications/luci-app-https-dns-proxy/luasrc/model/cbi/https-dns-proxy.lua:189
 msgid "Proxy server"
-msgstr "Прокси сервер"
+msgstr "Прокси-сервер"
 
 #: applications/luci-app-https-dns-proxy/luasrc/https-dns-proxy/providers/net.quad9.dns.lua:3
 msgid "Quad 9 (Recommended)"
@@ -149,29 +172,29 @@ msgstr "Quad 9 (Защищено поддержкой ECS)"
 
 #: applications/luci-app-https-dns-proxy/luasrc/https-dns-proxy/providers/net.quad9.dns9.lua:3
 msgid "Quad 9 (Secured)"
-msgstr "Quad 9 (Защищен)"
+msgstr "Quad 9 (Защищённый)"
 
 #: applications/luci-app-https-dns-proxy/luasrc/https-dns-proxy/providers/net.quad9.dns10.lua:3
 msgid "Quad 9 (Unsecured)"
-msgstr "Quad 9 (незащищенный)"
+msgstr "Quad 9 (Незащищённый)"
 
 #: applications/luci-app-https-dns-proxy/luasrc/view/https-dns-proxy/buttons.htm:44
 msgid "Reload"
 msgstr "Перезапустить"
 
-#: applications/luci-app-https-dns-proxy/luasrc/model/cbi/https-dns-proxy.lua:133
+#: applications/luci-app-https-dns-proxy/luasrc/model/cbi/https-dns-proxy.lua:145
 msgid "Resolver"
-msgstr "Поставщик"
+msgstr "Сервис DNS"
 
-#: applications/luci-app-https-dns-proxy/luasrc/model/cbi/https-dns-proxy.lua:98
+#: applications/luci-app-https-dns-proxy/luasrc/model/cbi/https-dns-proxy.lua:99
 msgid "Running: %s DoH at %s:%s"
-msgstr ""
+msgstr "Запущен: %s DoH, %s:%s"
 
-#: applications/luci-app-https-dns-proxy/luasrc/model/cbi/https-dns-proxy.lua:110
+#: applications/luci-app-https-dns-proxy/luasrc/model/cbi/https-dns-proxy.lua:111
 msgid "Service Status"
-msgstr "Статус сервиса"
+msgstr "Статус службы"
 
-#: applications/luci-app-https-dns-proxy/luasrc/model/cbi/https-dns-proxy.lua:108
+#: applications/luci-app-https-dns-proxy/luasrc/model/cbi/https-dns-proxy.lua:109
 msgid "Service Status [%s %s]"
 msgstr "Статус службы [%s %s]"
 
@@ -183,28 +206,61 @@ msgstr "Запустить"
 msgid "Stop"
 msgstr "Остановить"
 
-#: applications/luci-app-https-dns-proxy/luasrc/model/cbi/https-dns-proxy.lua:76
+#: applications/luci-app-https-dns-proxy/luasrc/model/cbi/https-dns-proxy.lua:77
 msgid "Stopped"
-msgstr "Остановлено"
+msgstr "Остановлена"
 
-#: applications/luci-app-https-dns-proxy/luasrc/model/cbi/https-dns-proxy.lua:63
+#: applications/luci-app-https-dns-proxy/luasrc/model/cbi/https-dns-proxy.lua:64
 msgid "Unknown Provider"
 msgstr "Неизвестный поставщик"
 
-#: applications/luci-app-https-dns-proxy/luasrc/model/cbi/https-dns-proxy.lua:127
-msgid ""
-"When you add/remove any instances below, they will be used to override the "
-"'DNS forwardings' section of %sDHCP and DNS%s."
-msgstr ""
+#: applications/luci-app-https-dns-proxy/luasrc/model/cbi/https-dns-proxy.lua:131
+msgid "Update %s config"
+msgstr "Обновить настройки %s"
 
-#: applications/luci-app-https-dns-proxy/luasrc/model/cbi/https-dns-proxy.lua:48
+#: applications/luci-app-https-dns-proxy/luasrc/model/cbi/https-dns-proxy.lua:127
+msgid "Update DNSMASQ Config on Start/Stop"
+msgstr "Обновление настроек DNSMASQ при запуске/остановке службы"
+
+#: applications/luci-app-https-dns-proxy/luasrc/model/cbi/https-dns-proxy.lua:128
+msgid "Update all configs"
+msgstr "Обновлять все настройки"
+
+#: applications/luci-app-https-dns-proxy/luasrc/model/cbi/https-dns-proxy.lua:49
 msgid "and"
 msgstr "и"
 
-#: applications/luci-app-https-dns-proxy/luasrc/model/cbi/https-dns-proxy.lua:78
+#: applications/luci-app-https-dns-proxy/luasrc/model/cbi/https-dns-proxy.lua:79
 msgid "disabled"
 msgstr "отключено"
 
 #: applications/luci-app-https-dns-proxy/luasrc/https-dns-proxy/providers.disabled/cn.rubyfish.dns.lua:3
 msgid "rubyfish.cn"
 msgstr "rubyfish.cn"
+
+#~ msgid "Alidns"
+#~ msgstr "Alidns"
+
+#~ msgid "EDNS client subnet"
+#~ msgstr "Клиентская подсеть EDNS"
+
+#~ msgid "Grant UCI access for luci-app-https-dns-proxy"
+#~ msgstr "Предоставить UCI доступ для luci-app-https-dns-proxy"
+
+#~ msgid "DNS Over HTTPS Proxy"
+#~ msgstr "DNS Over HTTPS"
+
+#~ msgid "DNS Over HTTPS Proxy Settings"
+#~ msgstr "Настройки DNS Over HTTPS"
+
+#~ msgid "DHCP and DNS"
+#~ msgstr "DHCP и DNS"
+
+#~ msgid "DoH"
+#~ msgstr "DoH"
+
+#~ msgid "Running"
+#~ msgstr "Запущен"
+
+#~ msgid "is not installed or not found"
+#~ msgstr "не установлен или не найден"
