@@ -78,9 +78,21 @@ msgstr "DNS HTTPS Vekili Ayarları"
 msgid "DNS.SB"
 msgstr "DNS.SB"
 
+#: applications/luci-app-https-dns-proxy/luasrc/https-dns-proxy/providers.disabled/ca.dnscrypt.dns1.lua:3
+msgid "DNSCrypt.ca (DNS1)"
+msgstr ""
+
+#: applications/luci-app-https-dns-proxy/luasrc/https-dns-proxy/providers.disabled/ca.dnscrypt.dns2.lua:3
+msgid "DNSCrypt.ca (DNS2)"
+msgstr ""
+
 #: applications/luci-app-https-dns-proxy/luasrc/https-dns-proxy/providers/pub.doh.lua:3
 msgid "DNSPod.cn Public DNS"
 msgstr "DNSPod.cn Public DNS"
+
+#: applications/luci-app-https-dns-proxy/luasrc/model/cbi/https-dns-proxy.lua:189
+msgid "DSCP Codepoint"
+msgstr ""
 
 #: applications/luci-app-https-dns-proxy/luasrc/https-dns-proxy/providers.disabled/ch.digitale-gesellschaft.dns.lua:3
 msgid "Digitale Gesellschaft"
@@ -105,10 +117,6 @@ msgstr "Farklı seçenekler hakkında daha fazla bilgi için kontrol edin"
 #: applications/luci-app-https-dns-proxy/luasrc/https-dns-proxy/providers/google.dns.lua:3
 msgid "Google"
 msgstr "Google"
-
-#: applications/luci-app-https-dns-proxy/root/usr/share/rpcd/acl.d/luci-app-https-dns-proxy.json:3
-msgid "Grant UCI and file access for luci-app-https-dns-proxy"
-msgstr "luci-app-https-dns-proxy için UCI ve dosya erişimi verin"
 
 #: applications/luci-app-https-dns-proxy/luasrc/model/cbi/https-dns-proxy.lua:126
 msgid ""
@@ -156,7 +164,7 @@ msgstr "OpenDNS"
 msgid "OpenDNS (Family Shield)"
 msgstr "OpenDNS (Aile Koruması)"
 
-#: applications/luci-app-https-dns-proxy/luasrc/model/cbi/https-dns-proxy.lua:189
+#: applications/luci-app-https-dns-proxy/luasrc/model/cbi/https-dns-proxy.lua:193
 msgid "Proxy server"
 msgstr "Vekil sunucu"
 
@@ -235,10 +243,3 @@ msgstr "devre dışı"
 #: applications/luci-app-https-dns-proxy/luasrc/https-dns-proxy/providers.disabled/cn.rubyfish.dns.lua:3
 msgid "rubyfish.cn"
 msgstr "rubyfish.cn"
-
-#~ msgid ""
-#~ "When you add/remove any instances below, they will be used to override "
-#~ "the 'DNS forwardings' section of %sDHCP and DNS%s."
-#~ msgstr ""
-#~ "Aşağıdakilerden herhangi birini eklediğiniz/kaldırdığınızda, bunlar "
-#~ "%sDHCP ve DNS%s'in 'DNS İletimleri' bölümünü geçersiz kılacaktır."

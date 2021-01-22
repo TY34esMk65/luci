@@ -84,9 +84,21 @@ msgstr "DNS HTTPS Proxy 設定"
 msgid "DNS.SB"
 msgstr "DNS.SB"
 
+#: applications/luci-app-https-dns-proxy/luasrc/https-dns-proxy/providers.disabled/ca.dnscrypt.dns1.lua:3
+msgid "DNSCrypt.ca (DNS1)"
+msgstr ""
+
+#: applications/luci-app-https-dns-proxy/luasrc/https-dns-proxy/providers.disabled/ca.dnscrypt.dns2.lua:3
+msgid "DNSCrypt.ca (DNS2)"
+msgstr ""
+
 #: applications/luci-app-https-dns-proxy/luasrc/https-dns-proxy/providers/pub.doh.lua:3
 msgid "DNSPod.cn Public DNS"
 msgstr "DNSPod.cn 公用DNS"
+
+#: applications/luci-app-https-dns-proxy/luasrc/model/cbi/https-dns-proxy.lua:189
+msgid "DSCP Codepoint"
+msgstr ""
 
 #: applications/luci-app-https-dns-proxy/luasrc/https-dns-proxy/providers.disabled/ch.digitale-gesellschaft.dns.lua:3
 msgid "Digitale Gesellschaft"
@@ -112,18 +124,14 @@ msgstr "有關不同選項的更多資訊，請檢查"
 msgid "Google"
 msgstr "Google"
 
-#: applications/luci-app-https-dns-proxy/root/usr/share/rpcd/acl.d/luci-app-https-dns-proxy.json:3
-msgid "Grant UCI and file access for luci-app-https-dns-proxy"
-msgstr "授予 luci-app-https-dns-proxy 擁有 UCI 和檔案存取的權限"
-
 #: applications/luci-app-https-dns-proxy/luasrc/model/cbi/https-dns-proxy.lua:126
 msgid ""
 "If update DNSMASQ config is selected, when you add/remove any instances "
 "below, they will be used to override the 'DNS forwardings' section of %sDHCP "
 "and DNS%s (%smore information%s)."
 msgstr ""
-"如果選擇了更新DNSMASQ設置，則當您新增/刪除下面的任何實例時，它們將用於覆蓋 ％sDHCP 和 DNS％s（％s更多信息％s）的 “DNS轉發” "
-"部分。"
+"如果選擇了更新DNSMASQ設置，則當您新增/刪除下面的任何實例時，它們將用於覆蓋 "
+"％sDHCP 和 DNS％s（％s更多信息％s）的 “DNS轉發” 部分。"
 
 #: applications/luci-app-https-dns-proxy/luasrc/model/cbi/https-dns-proxy.lua:138
 msgid "Instances"
@@ -161,7 +169,7 @@ msgstr "OpenDNS"
 msgid "OpenDNS (Family Shield)"
 msgstr "OpenDNS (家庭盾)"
 
-#: applications/luci-app-https-dns-proxy/luasrc/model/cbi/https-dns-proxy.lua:189
+#: applications/luci-app-https-dns-proxy/luasrc/model/cbi/https-dns-proxy.lua:193
 msgid "Proxy server"
 msgstr "代理伺服器"
 
@@ -240,21 +248,3 @@ msgstr "已停用"
 #: applications/luci-app-https-dns-proxy/luasrc/https-dns-proxy/providers.disabled/cn.rubyfish.dns.lua:3
 msgid "rubyfish.cn"
 msgstr "rubyfish.cn"
-
-#~ msgid "Provider"
-#~ msgstr "提供商"
-
-#~ msgid "Subnet address"
-#~ msgstr "子網位址"
-
-#~ msgid "HTTPS DNS Proxy"
-#~ msgstr "HTTPS DNS 代理"
-
-#~ msgid "HTTPS DNS Proxy Settings"
-#~ msgstr "HTTPS DNS 代理設定"
-
-#~ msgid "Group name"
-#~ msgstr "組名稱"
-
-#~ msgid "User name"
-#~ msgstr "使用者名稱"
