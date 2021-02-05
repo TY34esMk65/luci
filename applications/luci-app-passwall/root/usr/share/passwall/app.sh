@@ -578,13 +578,13 @@ run_redir() {
 				local port=$(config_t_get global tcp_node_socks_port 1080)
 				local config_file=$TMP_PATH/SOCKS_TCP.json
 				local log_file=$TMP_PATH/SOCKS_TCP.log
-				local http_port=0
-				local http_config_file=$TMP_PATH/HTTP2SOCKS_TCP.json
-				[ "$(config_t_get global tcp_node_http 0)" = "1" ] && {
-					http_port=$(config_t_get global tcp_node_http_port 1180)
-				}
-				run_socks TCP $TCP_NODE "0.0.0.0" $port $config_file $http_port $http_config_file
 			}
+			local http_port=0
+			local http_config_file=$TMP_PATH/HTTP2SOCKS_TCP.json
+			[ "$(config_t_get global tcp_node_http 0)" = "1" ] && {
+				http_port=$(config_t_get global tcp_node_http_port 1180)
+			}
+			run_socks TCP $TCP_NODE "0.0.0.0" $port $config_file $http_port $http_config_file
 		}
 	;;
 	esac
@@ -592,8 +592,8 @@ run_redir() {
 }
 
 node_switch() {
+	local node=$3
 	[ -n "$1" -a -n "$2" -a -n "$3" ] && {
-		local node=$3
 		top -bn1 | grep -E "$TMP_PATH" | grep -i "${1}" | grep -v "grep" | awk '{print $1}' | xargs kill -9 >/dev/null 2>&1 &
 		local config_file=$TMP_PATH/${1}.json
 		local log_file=$TMP_PATH/${1}.log
@@ -1101,9 +1101,10 @@ start_haproxy() {
 	cat <<-EOF > "${haproxy_file}"
 		global
 		    log         127.0.0.1 local2
-		    chroot      ${haproxy_path}
+		    chroot      /usr/bin
 		    maxconn     60000
 		    stats socket  ${haproxy_path}/haproxy.sock
+		    user        root
 		    daemon
 
 		defaults
@@ -1194,7 +1195,6 @@ start_haproxy() {
 	local auth=""
 	[ -n "$console_user" ] && [ -n "$console_password" ] && auth="stats auth $console_user:$console_password"
 	cat <<-EOF >> "${haproxy_file}"
-	
 		listen console
 		    bind 0.0.0.0:$console_port
 		    mode http
@@ -1204,7 +1204,7 @@ start_haproxy() {
 		    $auth
 	EOF
 
-	[ "${hasvalid}" != "1" ] && echolog "  - 没有发现任何有效节点信息，不启动。" && return 0
+	[ "${hasvalid}" != "1" ] && echolog "  - 没有发现任何有效节点信息..." && return 0
 	ln_start_bin "$(first_type haproxy)" haproxy "/dev/null" -f "${haproxy_file}"
 	echolog "  * 控制台端口：${console_port}/，${auth:-公开}"
 }
