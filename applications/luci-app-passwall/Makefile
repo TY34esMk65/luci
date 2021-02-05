@@ -79,7 +79,6 @@ define Package/$(PKG_NAME)
   +PACKAGE_$(PKG_NAME)_INCLUDE_Xray:xray \
   +PACKAGE_$(PKG_NAME)_INCLUDE_Trojan_GO:trojan-go \
   +PACKAGE_$(PKG_NAME)_INCLUDE_NaiveProxy:naiveproxy \
-  +PACKAGE_$(PKG_NAME)_INCLUDE_Brook:brook \
   +PACKAGE_$(PKG_NAME)_INCLUDE_haproxy:haproxy \
   +PACKAGE_$(PKG_NAME)_INCLUDE_v2ray-plugin:v2ray-plugin \
   +PACKAGE_$(PKG_NAME)_INCLUDE_simple-obfs:simple-obfs
