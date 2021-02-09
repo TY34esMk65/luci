@@ -177,9 +177,9 @@ load_acl() {
 						msg2="${msg2}[$?]除${udp_no_redir_ports}外的"
 					}
 					msg2="${msg2}所有端口"
-					$ipt_m -A PSW $(comment "$remarks") -p udp $(factor $ip "-s") $(factor $mac "-m mac --mac-source") $(factor $UDP_REDIR_PORTS "-m multiport --dport") $(dst $IPSET_SHUNTLIST) $(REDIRECT $udp_port TPROXY)
-					$ipt_m -A PSW $(comment "$remarks") -p udp $(factor $ip "-s") $(factor $mac "-m mac --mac-source") $(factor $UDP_REDIR_PORTS "-m multiport --dport") $(dst $IPSET_BLACKLIST) $(REDIRECT $udp_port TPROXY)
-					$ipt_m -A PSW $(comment "$remarks") -p udp $(factor $ip "-s") $(factor $mac "-m mac --mac-source") $(factor $UDP_REDIR_PORTS "-m multiport --dport") $(get_redirect_ipt $udp_proxy_mode $udp_port TPROXY)
+					$ipt_m -A PSW $(comment "$remarks") -p udp $(factor $ip "-s") $(factor $mac "-m mac --mac-source") $(factor $udp_redir_ports "-m multiport --dport") $(dst $IPSET_SHUNTLIST) $(REDIRECT $udp_port TPROXY)
+					$ipt_m -A PSW $(comment "$remarks") -p udp $(factor $ip "-s") $(factor $mac "-m mac --mac-source") $(factor $udp_redir_ports "-m multiport --dport") $(dst $IPSET_BLACKLIST) $(REDIRECT $udp_port TPROXY)
+					$ipt_m -A PSW $(comment "$remarks") -p udp $(factor $ip "-s") $(factor $mac "-m mac --mac-source") $(factor $udp_redir_ports "-m multiport --dport") $(get_redirect_ipt $udp_proxy_mode $udp_port TPROXY)
 				}
 				echolog "  - ${msg2}"
 			}
@@ -190,8 +190,6 @@ load_acl() {
 	#  加载TCP默认代理模式
 	local ipt_tmp=$ipt_n
 	local is_tproxy msg
-	unset is_tproxy msg
-
 	if [ "$TCP_PROXY_MODE" != "disable" ]; then
 		[ "$TCP_NO_REDIR_PORTS" != "disable" ] && $ipt_tmp -A PSW $(comment "默认") -p tcp -m multiport --dport $TCP_NO_REDIR_PORTS -j RETURN
 		ipt_tmp=$ipt_n
@@ -232,12 +230,21 @@ load_acl() {
 		}
 	fi
 	$ipt_m -A PSW $(comment "默认") -p udp -j RETURN
+	unset is_tproxy msg
+}
+
+filter_haproxy() {
+	uci show $CONFIG | grep "@haproxy_config" | grep "lbss=" | cut -d "'" -f 2 | grep -E "([0-9]{1,3}[\.]){3}[0-9]{1,3}" | awk -F ":" '{print $1}' | sed -e "/^$/d" | sed -e "s/^/add $IPSET_VPSIPLIST &/g" | awk '{print $0} END{print "COMMIT"}' | ipset -! -R
+	for host in $(uci show $CONFIG | grep "@haproxy_config" | grep "lbss=" | cut -d "'" -f 2 | grep -v -E "([0-9]{1,3}[\.]){3}[0-9]{1,3}" | awk -F ":" '{print $1}'); do
+		ipset -q add $IPSET_VPSIPLIST $(get_host_ip ipv4 $host 1)
+	done
+	echolog "加入负载均衡的节点到ipset[$IPSET_VPSIPLIST]直连完成"
 }
 
 filter_vpsip() {
 	uci show $CONFIG | grep ".address=" | cut -d "'" -f 2 | grep -E "([0-9]{1,3}[\.]){3}[0-9]{1,3}" | sed -e "/^$/d" | sed -e "s/^/add $IPSET_VPSIPLIST &/g" | awk '{print $0} END{print "COMMIT"}' | ipset -! -R
 	#uci show $CONFIG | grep ".address=" | cut -d "'" -f 2 | grep -E "([[a-f0-9]{1,4}(:[a-f0-9]{1,4}){7}|[a-f0-9]{1,4}(:[a-f0-9]{1,4}){0,7}::[a-f0-9]{0,4}(:[a-f0-9]{1,4}){0,7}])" | sed -e "/^$/d" | sed -e "s/^/add $IPSET_VPSIP6LIST &/g" | awk '{print $0} END{print "COMMIT"}' | ipset -! -R
-	echolog "过滤所有节点直接 IP 地址完成[$?]"
+	echolog "加入所有节点到ipset[$IPSET_VPSIPLIST]直连完成"
 }
 
 filter_node() {
@@ -292,12 +299,12 @@ filter_node() {
 					msg2="直连代理"
 				}
 				$_ipt -I PSW_OUTPUT $ADD_INDEX $(comment "${address}:${port}") -p $stream -d $address --dport $port $dst_rule 2>/dev/null
-			#else
-			#	msg2="已配置过的节点，"
+			else
+				msg2="已配置过的节点，"
 			fi
 		done
 		msg="[$?]$(echo ${2} | tr 'a-z' 'A-Z')${msg2}使用链${ADD_INDEX}，节点（${type}）：${address}:${port}"
-		echolog "  - ${msg}"
+		#echolog "  - ${msg}"
 	}
 	
 	local proxy_protocol=$(config_n_get $proxy_node protocol)
@@ -389,21 +396,22 @@ add_firewall_rule() {
 	lan_ifname=$(uci -q -p /var/state get network.lan.ifname)
 	[ -n "$lan_ifname" ] && {
 		lan_ip=$(ip address show $lan_ifname | grep -w "inet" | awk '{print $2}')
-		echolog "本机网段互访直连：${lan_ip}"
+		#echolog "本机网段互访直连：${lan_ip}"
 		[ -n "$lan_ip" ] && ipset -! add $IPSET_LANIPLIST $lan_ip >/dev/null 2>&1 &
 	}
 
 	local ISP_DNS=$(cat $RESOLVFILE 2>/dev/null | grep -E -o "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+" | sort -u | grep -v 0.0.0.0 | grep -v 127.0.0.1)
 	[ -n "$ISP_DNS" ] && {
-		echolog "处理 ISP DNS 例外..."
+		#echolog "处理 ISP DNS 例外..."
 		for ispip in $ISP_DNS; do
 			ipset -! add $IPSET_WHITELIST $ispip >/dev/null 2>&1 &
-			echolog "  - 追加到白名单：${ispip}"
+			#echolog "  - 追加到白名单：${ispip}"
 		done
 	}
 	
 	#  过滤所有节点IP
-	filter_vpsip
+	filter_vpsip > /dev/null 2>&1 &
+	filter_haproxy > /dev/null 2>&1 &
 	
 	$ipt_n -N PSW
 	$ipt_n -A PSW $(dst $IPSET_LANIPLIST) -j RETURN
@@ -447,7 +455,7 @@ add_firewall_rule() {
 		fi
 		_proxy_tcp_access() {
 			[ -n "${2}" ] || return 0
-			ipset test $IPSET_LANIPLIST ${2} 2>/dev/null
+			ipset -q test $IPSET_LANIPLIST ${2}
 			[ $? -eq 0 ] && {
 				echolog "  - 上游 DNS 服务器 ${2} 已在直接访问的列表中，不强制向 TCP 代理转发对该服务器 TCP/${3} 端口的访问"
 				return 0
@@ -508,7 +516,7 @@ add_firewall_rule() {
 	# 过滤Socks节点
 	[ "$SOCKS_ENABLED" = "1" ] && {
 		local ids=$(uci show $CONFIG | grep "=socks" | awk -F '.' '{print $2}' | awk -F '=' '{print $1}')
-		echolog "分析 Socks 服务所使用节点..."
+		#echolog "分析 Socks 服务所使用节点..."
 		local id enabled node port msg num
 		for id in $ids; do
 			enabled=$(config_n_get $id enabled 0)
@@ -522,10 +530,10 @@ add_firewall_rule() {
 				eval "node=\${TCP_NODE}"
 				msg="${msg} 使用与 TCP 代理自动切换${num} 相同的节点，延后处理"
 			else
-				filter_node $node TCP
-				filter_node $node UDP
+				filter_node $node TCP > /dev/null 2>&1 &
+				filter_node $node UDP > /dev/null 2>&1 &
 			fi
-			echolog "  - ${msg}"
+			#echolog "  - ${msg}"
 		done
 	}
 
@@ -534,16 +542,13 @@ add_firewall_rule() {
 	for stream in TCP UDP; do
 		eval "node=\${${stream}_NODE}"
 		eval "port=\${${stream}_REDIR_PORT}"
-		echolog "分析 $stream 代理自动切换..."
+		#echolog "分析 $stream 代理自动切换..."
 		[ "$node" == "tcp" ] && [ "$stream" == "UDP" ] && {
 			eval "node=\${TCP_NODE}"
 			eval "port=\${TCP_REDIR_PORT}"
-			echolog "  - 采用 TCP 代理的配置"
 		}
 		if [ "$node" != "nil" ]; then
-			filter_node $node $stream $port
-		else
-			echolog "  - 忽略无效的 $stream 代理自动切换"
+			filter_node $node $stream $port > /dev/null 2>&1 &
 		fi
 	done
 	
@@ -554,7 +559,7 @@ add_firewall_rule() {
 		local ADD_INDEX=$FORCE_INDEX
 		_proxy_udp_access() {
 			[ -n "${2}" ] || return 0
-			ipset test $IPSET_LANIPLIST ${2} 2>/dev/null
+			ipset -q test $IPSET_LANIPLIST ${2}
 			[ $? == 0 ] && {
 				echolog "  - 上游 DNS 服务器 ${2} 已在直接访问的列表中，不强制向 UDP 代理转发对该服务器 UDP/${3} 端口的访问"
 				return 0
