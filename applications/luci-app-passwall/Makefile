@@ -1,5 +1,5 @@
 # Copyright (C) 2018-2020 L-WRT Team
-#
+# Copyright (C) 2021 xiaorouji
 # This is free software, licensed under the GNU General Public License v3.
 #
 
@@ -7,8 +7,8 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=luci-app-passwall
 PKG_VERSION:=4
-PKG_RELEASE:=9
-PKG_DATE:=20210119
+PKG_RELEASE:=15
+PKG_DATE:=20210213
 
 PKG_BUILD_DIR := $(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)
 
@@ -37,10 +37,6 @@ config PACKAGE_$(PKG_NAME)_INCLUDE_Xray
 	bool "Include Xray"
 	default y if i386||x86_64||arm||aarch64
 	
-config PACKAGE_$(PKG_NAME)_INCLUDE_V2ray
-	bool "Include V2ray"
-	default n
-	
 config PACKAGE_$(PKG_NAME)_INCLUDE_Trojan_GO
 	bool "Include Trojan_GO"
 	default y if i386||x86_64||arm||aarch64
@@ -48,10 +44,6 @@ config PACKAGE_$(PKG_NAME)_INCLUDE_Trojan_GO
 config PACKAGE_$(PKG_NAME)_INCLUDE_NaiveProxy
 	bool "Include NaiveProxy"
 	default n
-
-config PACKAGE_$(PKG_NAME)_INCLUDE_haproxy
-	bool "Include haproxy"
-	default y
 	
 config PACKAGE_$(PKG_NAME)_INCLUDE_v2ray-plugin
 	bool "Include v2ray-plugin (Shadowsocks plugin)"
@@ -72,7 +64,6 @@ define Package/$(PKG_NAME)
   DEPENDS:=+libmbedtls +iptables-mod-tproxy +ip +ipset +coreutils +coreutils-base64 +coreutils-nohup +luci-lib-jsonc \
   +curl +ca-certificates +resolveip +unzip +dnsmasq-full +tcping +libuci-lua \
   +ipt2socks \
-  +ssocks \
   +microsocks \
   +pdnsd-alt \
   +PACKAGE_$(PKG_NAME)_INCLUDE_Shadowsocks:shadowsocks-libev-ss-redir \
@@ -81,11 +72,9 @@ define Package/$(PKG_NAME)
   +PACKAGE_$(PKG_NAME)_INCLUDE_ShadowsocksR:shadowsocksr-libev-alt \
   +PACKAGE_$(PKG_NAME)_INCLUDE_ShadowsocksR:shadowsocksr-libev-ssr-local \
   +PACKAGE_$(PKG_NAME)_INCLUDE_ShadowsocksR_Server:shadowsocksr-libev-server \
-  +PACKAGE_$(PKG_NAME)_INCLUDE_Xray:xray \
-  +PACKAGE_$(PKG_NAME)_INCLUDE_V2ray:v2ray \
-   +PACKAGE_$(PKG_NAME)_INCLUDE_Trojan_GO:trojan-go \
+  +PACKAGE_$(PKG_NAME)_INCLUDE_Xray:xray-core \
+  +PACKAGE_$(PKG_NAME)_INCLUDE_Trojan_GO:trojan-go \
   +PACKAGE_$(PKG_NAME)_INCLUDE_NaiveProxy:naiveproxy \
-  +PACKAGE_$(PKG_NAME)_INCLUDE_haproxy:haproxy \
   +PACKAGE_$(PKG_NAME)_INCLUDE_v2ray-plugin:v2ray-plugin \
   +PACKAGE_$(PKG_NAME)_INCLUDE_simple-obfs:simple-obfs
 endef
