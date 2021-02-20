@@ -1,5 +1,5 @@
-local api = require "luci.model.cbi.passwall.api.api"
-local appname = api.appname
+local uci = require"luci.model.uci".cursor()
+local appname = "passwall"
 
 m = Map(appname)
 
@@ -82,6 +82,16 @@ o = s:option(Value, "udp_redir_ports", translate("UDP Redir Ports"))
 o.default = "1:65535"
 o:value("1:65535", translate("All"))
 o:value("53", "DNS")
+
+---- Multi SS/SSR Process Option
+o = s:option(Value, "process", translate("Multi Process Option"))
+o.default = "0"
+o.rmempty = false
+o:value("0", translate("Auto"))
+o:value("1", translate("1 Process"))
+o:value("2", "2 " .. translate("Process"))
+o:value("3", "3 " .. translate("Process"))
+o:value("4", "4 " .. translate("Process"))
 
 --[[
 ---- Proxy IPv6

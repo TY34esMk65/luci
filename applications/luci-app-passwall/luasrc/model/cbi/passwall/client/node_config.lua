@@ -1,6 +1,7 @@
+local d = require "luci.dispatcher"
 local uci = require"luci.model.uci".cursor()
 local api = require "luci.model.cbi.passwall.api.api"
-local appname = api.appname
+local appname = "passwall"
 
 local ss_encrypt_method_list = {
     "rc4-md5", "aes-128-cfb", "aes-192-cfb", "aes-256-cfb", "aes-128-ctr",
@@ -53,7 +54,7 @@ local encrypt_methods_ss_aead = {
 }
 
 m = Map(appname, translate("Node Config"))
-m.redirect = api.url()
+m.redirect = d.build_url("admin", "services", appname)
 
 s = m:section(NamedSection, arg[1], "nodes", "")
 s.addremove = false
@@ -128,21 +129,14 @@ balancing_node:depends("protocol", "_balancing")
 
 -- 分流
 uci:foreach(appname, "shunt_rules", function(e)
-    o = s:option(ListValue, e[".name"], string.format('* <a href="%s" target="_blank">%s</a>', api.url("shunt_rules", e[".name"]), translate(e.remarks)))
+    o = s:option(ListValue, e[".name"], '<a href="../shunt_rules/' .. e[".name"] .. '">' .. translate(e.remarks) .. "</a>")
     o:value("nil", translate("Close"))
-    o:value("_direct", translate("Direct Connection"))
-    o:value("_blackhole", translate("Blackhole"))
+    for k, v in pairs(nodes_table) do o:value(v.id, v.remarks) end
     o:depends("protocol", "_shunt")
 
-    if #nodes_table > 0 then
-        _proxy = s:option(Flag, e[".name"] .. "_proxy", translate(e.remarks) .. translate("Preproxy"), translate("Use the default node for the transit."))
-        _proxy.default = 0
-
-        for k, v in pairs(nodes_table) do
-            o:value(v.id, v.remarks)
-            _proxy:depends(e[".name"], v.id)
-        end
-    end
+    o = s:option(Flag, e[".name"] .. "_proxy", translate(e.remarks) .. translate("Preproxy"), translate("Use the default node for the transit."))
+    o.default = 0
+    o:depends("protocol", "_shunt")
 end)
 
 shunt_tips = s:option(DummyValue, "shunt_tips", " ")
