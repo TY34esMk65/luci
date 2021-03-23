@@ -1,20 +1,21 @@
-all: luci-app-filebrowser.ipk
+# Copyright (C) 2016 Openwrt.org
+#
+# This is free software, licensed under the Apache License, Version 2.0 .
+#
 
-luci-app-filebrowser.ipk:
-	rm -rf ipk
-	mkdir -p ipk/usr/lib/lua/luci/controller/
-	mkdir -p ipk/usr/lib/lua/luci/view/
-	cp luasrc/controller/* ipk/usr/lib/lua/luci/controller/
-	cp luasrc/view/* ipk/usr/lib/lua/luci/view/
-	tar czvf control.tar.gz control
-	cd ipk; tar czvf ../data.tar.gz .; cd ..
-	echo 2.0 > debian-binary
-	ar r luci-app-filebrowser_`date +%Y%m%d`.ipk control.tar.gz data.tar.gz  debian-binary
+include $(TOPDIR)/rules.mk
 
-clean:
-	rm -rf ipk
-	rm -f debian-binary
-	rm -f control.tar.gz
-	rm -f data.tar.gz
-	rm -f luci-app-filebrowser.ipk
-	
+LUCI_TITLE:=LuCI Support for FileBrowser
+LUCI_DEPENDS:=+filebrowser
+LUCI_PKGARCH:=all
+
+PKG_NAME:=luci-app-filebrowser
+PKG_VERSION:=2.12.1
+PKG_RELEASE:=e9c0369
+
+PKG_LICENSE:=GPLv3
+PKG_MAINTAINER:=[CTCGFW] Project OpenWRT
+
+include $(TOPDIR)/feeds/luci/luci.mk
+
+# call BuildPackage - OpenWrt buildroot signature
