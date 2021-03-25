@@ -45,10 +45,6 @@ config PACKAGE_$(PKG_NAME)_INCLUDE_NaiveProxy
 	bool "Include NaiveProxy"
 	default n
 	
-config PACKAGE_$(PKG_NAME)_INCLUDE_kcptun
-	bool "Include kcptun"
-	default n
-	
 config PACKAGE_$(PKG_NAME)_INCLUDE_v2ray-plugin
 	bool "Include v2ray-plugin (Shadowsocks plugin)"
 	default y if i386||x86_64||arm||aarch64
