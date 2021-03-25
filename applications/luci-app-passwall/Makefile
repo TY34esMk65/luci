@@ -7,8 +7,8 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=luci-app-passwall
 PKG_VERSION:=4
-PKG_RELEASE:=17
-PKG_DATE:=20210314
+PKG_RELEASE:=18
+PKG_DATE:=20210325
 
 PKG_BUILD_DIR := $(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)
 
@@ -43,6 +43,10 @@ config PACKAGE_$(PKG_NAME)_INCLUDE_Trojan_GO
 	
 config PACKAGE_$(PKG_NAME)_INCLUDE_NaiveProxy
 	bool "Include NaiveProxy"
+	default n
+	
+config PACKAGE_$(PKG_NAME)_INCLUDE_kcptun
+	bool "Include kcptun"
 	default n
 	
 config PACKAGE_$(PKG_NAME)_INCLUDE_v2ray-plugin
