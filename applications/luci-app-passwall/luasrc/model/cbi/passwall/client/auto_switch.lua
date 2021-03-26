@@ -24,7 +24,7 @@ o.default = "1"
 o = s:option(DynamicList, "tcp_node", "TCP " .. translate("List of backup nodes"))
 for k, v in pairs(nodes_table) do
     if v.node_type == "normal" then
-        o:value(v.id, v["remark"])
+        o:value(v.id, v.remarks_name)
     end
 end
 

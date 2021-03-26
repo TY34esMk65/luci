@@ -54,6 +54,11 @@ s = m:section(NamedSection, arg[1], "user", "")
 s.addremove = false
 s.dynamic = false
 
+share = s:option(DummyValue, "passwall_server", translate("Share Current"))
+share.rawhtml  = true
+share.template = "passwall/node_list/link_share_man"
+share.value = arg[1]
+
 enable = s:option(Flag, "enable", translate("Enable"))
 enable.default = "1"
 enable.rmempty = false
@@ -546,7 +551,7 @@ for k, e in ipairs(api.get_valid_nodes()) do
     if e.node_type == "normal" and e.type == "Xray" then
         nodes_table[#nodes_table + 1] = {
             id = e[".name"],
-            remarks = e["remark"]
+            remarks = e.remarks_name
         }
     end
 end
@@ -577,7 +582,7 @@ transit_node_password.password = true
 transit_node_password:depends("transit_node", "_socks")
 transit_node_password:depends("transit_node", "_http")
 
-log = s:option(Flag, "log", translate("Log"))
+log = s:option(Flag, "log", translate("Enable") .. translate("Log"))
 log.default = "1"
 log.rmempty = false
 
