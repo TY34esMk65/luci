@@ -45,12 +45,12 @@ config PACKAGE_$(PKG_NAME)_INCLUDE_NaiveProxy
 	bool "Include NaiveProxy"
 	default n
 	
-config PACKAGE_$(PKG_NAME)_INCLUDE_v2ray-plugin
-	bool "Include v2ray-plugin (Shadowsocks plugin)"
+config PACKAGE_$(PKG_NAME)_INCLUDE_V2ray-plugin
+	bool "Include V2ray-plugin (Shadowsocks plugin)"
 	default y if i386||x86_64||arm||aarch64
 
-config PACKAGE_$(PKG_NAME)_INCLUDE_simple-obfs
-	bool "Include simple-obfs (Shadowsocks plugin)"
+config PACKAGE_$(PKG_NAME)_INCLUDE_Simple-obfs
+	bool "Include Simple-obfs (Shadowsocks plugin)"
 	default y if i386||x86_64||arm||aarch64
 
 endmenu
@@ -76,8 +76,8 @@ define Package/$(PKG_NAME)
   +PACKAGE_$(PKG_NAME)_INCLUDE_Xray:xray-geodata \
   +PACKAGE_$(PKG_NAME)_INCLUDE_Trojan_GO:trojan-go \
   +PACKAGE_$(PKG_NAME)_INCLUDE_NaiveProxy:naiveproxy \
-  +PACKAGE_$(PKG_NAME)_INCLUDE_v2ray-plugin:v2ray-plugin \
-  +PACKAGE_$(PKG_NAME)_INCLUDE_simple-obfs:simple-obfs
+  +PACKAGE_$(PKG_NAME)_INCLUDE_V2ray-plugin:v2ray-plugin \
+  +PACKAGE_$(PKG_NAME)_INCLUDE_Simple-obfs:simple-obfs
 endef
 
 define Build/Prepare
