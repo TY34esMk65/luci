@@ -9,7 +9,7 @@ for k, e in ipairs(api.get_valid_nodes()) do
         nodes_table[#nodes_table + 1] = {
             id = e[".name"],
             obj = e,
-            remarks = e["remark"]
+            remarks = e.remarks_name
         }
     end
 end
@@ -30,19 +30,19 @@ o.default = false
 ---- Console Username
 o = s:option(Value, "console_user", translate("Console Username"))
 o.default = ""
-o:depends("balancing_enable", true)
+o:depends("balancing_enable", 1)
 
 ---- Console Password
 o = s:option(Value, "console_password", translate("Console Password"))
 o.password = true
 o.default = ""
-o:depends("balancing_enable", true)
+o:depends("balancing_enable", 1)
 
 ---- Console Port
 o = s:option(Value, "console_port", translate("Console Port"), translate(
                  "In the browser input routing IP plus port access, such as:192.168.1.1:1188"))
 o.default = "1188"
-o:depends("balancing_enable", true)
+o:depends("balancing_enable", 1)
 
 -- [[ Balancing Settings ]]--
 s = m:section(TypedSection, "haproxy_config", "",
