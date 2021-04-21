@@ -7,8 +7,8 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=luci-app-passwall
 PKG_VERSION:=4
-PKG_RELEASE:=19
-PKG_DATE:=20210327
+PKG_RELEASE:=20
+PKG_DATE:=20210418
 
 PKG_BUILD_DIR := $(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)
 
@@ -24,6 +24,11 @@ config PACKAGE_$(PKG_NAME)_INCLUDE_Shadowsocks
 config PACKAGE_$(PKG_NAME)_INCLUDE_Shadowsocks_Server
 	bool "Include Shadowsocks Server"
 	default y
+	
+config PACKAGE_$(PKG_NAME)_INCLUDE_Shadowsocks_Rust
+	bool "Include Shadowsocks Rust (AEAD ciphers only)"
+	depends on aarch64||arm||i386||mips||mipsel||x86_64
+	default n
 	
 config PACKAGE_$(PKG_NAME)_INCLUDE_ShadowsocksR
 	bool "Include ShadowsocksR"
@@ -69,11 +74,11 @@ define Package/$(PKG_NAME)
   +PACKAGE_$(PKG_NAME)_INCLUDE_Shadowsocks:shadowsocks-libev-ss-redir \
   +PACKAGE_$(PKG_NAME)_INCLUDE_Shadowsocks:shadowsocks-libev-ss-local \
   +PACKAGE_$(PKG_NAME)_INCLUDE_Shadowsocks_Server:shadowsocks-libev-ss-server \
+  +PACKAGE_$(PKG_NAME)_INCLUDE_Shadowsocks_Rust:shadowsocks-rust-sslocal \
   +PACKAGE_$(PKG_NAME)_INCLUDE_ShadowsocksR:shadowsocksr-libev-alt \
   +PACKAGE_$(PKG_NAME)_INCLUDE_ShadowsocksR:shadowsocksr-libev-ssr-local \
   +PACKAGE_$(PKG_NAME)_INCLUDE_ShadowsocksR_Server:shadowsocksr-libev-server \
   +PACKAGE_$(PKG_NAME)_INCLUDE_Xray:xray-core \
-  +PACKAGE_$(PKG_NAME)_INCLUDE_Xray:xray-geodata \
   +PACKAGE_$(PKG_NAME)_INCLUDE_Trojan_GO:trojan-go \
   +PACKAGE_$(PKG_NAME)_INCLUDE_NaiveProxy:naiveproxy \
   +PACKAGE_$(PKG_NAME)_INCLUDE_V2ray-plugin:v2ray-plugin \
