@@ -1,67 +1,93 @@
 include $(TOPDIR)/rules.mk
 
-PKG_NAME:=luci-app-ssr-plus
-PKG_VERSION:=183
-PKG_RELEASE:=11
+PKG_NAME:=luci-app-vssr
+PKG_VERSION:=1.22-1
+PKG_RELEASE:=20210322
 
-define Package/$(PKG_NAME)/conffiles
-/etc/config/shadowsocksr
-/etc/ssrplus/
-endef
+include $(INCLUDE_DIR)/package.mk
 
 define Package/$(PKG_NAME)/config
-config PACKAGE_$(PKG_NAME)_INCLUDE_Shadowsocks
-	bool "Include Shadowsocks"
-	default y if i386||x86_64||arm||aarch64
-
-config PACKAGE_$(PKG_NAME)_INCLUDE_Shadowsocks_Rust
-	bool "Include Shadowsocks Rust (AEAD ciphers only)"
-	depends on aarch64||arm||i386||mips||mipsel||x86_64
-	default y if aarch64
-
-config PACKAGE_$(PKG_NAME)_INCLUDE_V2ray_plugin
-	bool "Include Shadowsocks V2ray Plugin"
-	default n
-
 config PACKAGE_$(PKG_NAME)_INCLUDE_Xray
-	bool "Include Xray (V2RAY/Trojan-GO implemented)"
+	bool "Include Xray"
 	default y if i386||x86_64||arm||aarch64
 
 config PACKAGE_$(PKG_NAME)_INCLUDE_Trojan
-	bool "Include Trojan (OpenSSL)"
-	default n if i386||x86_64||arm||aarch64
-
-config PACKAGE_$(PKG_NAME)_INCLUDE_Redsocks2
-	bool "Include Redsocks2"
+	bool "Include Trojan"
+	default y if i386||x86_64||arm||aarch64
+	
+config PACKAGE_$(PKG_NAME)_INCLUDE_Kcptun
+	bool "Include Kcptun"
 	default n
 
-config PACKAGE_$(PKG_NAME)_INCLUDE_NaiveProxy
-	bool "Include NaiveProxy"
-	depends on !(arc||armeb||mips||mips64||powerpc)
-	default n
+config PACKAGE_$(PKG_NAME)_INCLUDE_Xray_plugin
+	bool "Include Shadowsocks Xray Plugin"
+	default y if i386||x86_64||arm||aarch64
 
 config PACKAGE_$(PKG_NAME)_INCLUDE_ShadowsocksR_Server
 	bool "Include ShadowsocksR Server"
 	default y if i386||x86_64||arm||aarch64
 endef
 
-LUCI_TITLE:=SS/SSR/V2Ray/Trojan/NaiveProxy/Socks5/Tun LuCI interface
-LUCI_PKGARCH:=all
-LUCI_DEPENDS:=+shadowsocksr-libev-alt +ipset +ip-full +iptables-mod-tproxy +dnsmasq-full +coreutils +coreutils-base64 +pdnsd-alt +wget-ssl +lua +libuci-lua \
-	+microsocks +dns2socks +shadowsocksr-libev-ssr-local +tcping +resolveip \
-	+PACKAGE_$(PKG_NAME)_INCLUDE_Shadowsocks:shadowsocks-libev-ss-local \
-	+PACKAGE_$(PKG_NAME)_INCLUDE_Shadowsocks:shadowsocks-libev-ss-redir \
-	+PACKAGE_$(PKG_NAME)_INCLUDE_Shadowsocks:simple-obfs \
-	+PACKAGE_$(PKG_NAME)_INCLUDE_Shadowsocks_Rust:shadowsocks-rust-sslocal \
-	+PACKAGE_$(PKG_NAME)_INCLUDE_Shadowsocks_Rust:simple-obfs \
-	+PACKAGE_$(PKG_NAME)_INCLUDE_V2ray_plugin:v2ray-plugin \
-	+PACKAGE_$(PKG_NAME)_INCLUDE_Xray:xray-core \
-	+PACKAGE_$(PKG_NAME)_INCLUDE_Trojan:trojan \
-	+PACKAGE_$(PKG_NAME)_INCLUDE_Trojan:ipt2socks \
-	+PACKAGE_$(PKG_NAME)_INCLUDE_NaiveProxy:naiveproxy \
-	+PACKAGE_$(PKG_NAME)_INCLUDE_Redsocks2:redsocks2 \
-	+PACKAGE_$(PKG_NAME)_INCLUDE_ShadowsocksR_Server:shadowsocksr-libev-server
+PKG_CONFIG_DEPENDS:= \
+	CONFIG_PACKAGE_$(PKG_NAME)_INCLUDE_Xray \
+	CONFIG_PACKAGE_$(PKG_NAME)_INCLUDE_Trojan \
+	CONFIG_PACKAGE_$(PKG_NAME)_INCLUDE_Xray_plugin \
+	CONFIG_PACKAGE_$(PKG_NAME)_INCLUDE_ShadowsocksR_Server
 
-include $(TOPDIR)/feeds/luci/luci.mk
+define Package/luci-app-vssr
+ 	SECTION:=luci
+	CATEGORY:=LuCI
+	SUBMENU:=3. Applications
+	TITLE:=A New SS/SSR/Xray/Trojan LuCI interface
+	PKGARCH:=all
+	DEPENDS:=+shadowsocksr-libev-alt +ipset +ip-full +iptables-mod-tproxy +dnsmasq-full +coreutils +coreutils-base64 +bash +pdnsd-alt +wget-ssl +lua +luasocket +lua-maxminddb \
+			+shadowsocks-libev-ss-local +shadowsocksr-libev-ssr-local +shadowsocks-libev-ss-redir +simple-obfs \
+			+PACKAGE_$(PKG_NAME)_INCLUDE_Xray:xray-core \
+			+PACKAGE_$(PKG_NAME)_INCLUDE_Trojan:trojan \
+			+PACKAGE_$(PKG_NAME)_INCLUDE_Trojan:ipt2socks \
+			+PACKAGE_$(PKG_NAME)_INCLUDE_Xray_plugin:xray-plugin \
+			+PACKAGE_$(PKG_NAME)_INCLUDE_ShadowsocksR_Server:shadowsocksr-libev-server
+endef
 
-# call BuildPackage - OpenWrt buildroot signature
+define Build/Prepare
+endef
+
+define Build/Compile
+endef
+
+define Package/luci-app-vssr/conffiles
+	/etc/vssr/
+	/etc/config/vssr
+endef
+
+define Package/luci-app-vssr/install
+	$(INSTALL_DIR) $(1)/usr/lib/lua/luci
+	cp -pR ./luasrc/* $(1)/usr/lib/lua/luci
+	$(INSTALL_DIR) $(1)/
+	cp -pR ./root/* $(1)/
+	$(INSTALL_DIR) $(1)/usr/lib/lua/luci/i18n
+	po2lmo ./po/zh-cn/vssr.po $(1)/usr/lib/lua/luci/i18n/vssr.zh-cn.lmo
+endef
+
+define Package/luci-app-vssr/postinst
+#!/bin/sh
+if [ -z "$${IPKG_INSTROOT}" ]; then
+	( . /etc/uci-defaults/luci-vssr ) && rm -f /etc/uci-defaults/luci-vssr
+	rm -rf /tmp/luci-indexcache
+	rm -rf /tmp/luci-modulecache/*
+	chmod 755 /etc/init.d/vssr >/dev/null 2>&1
+	/etc/init.d/vssr enable >/dev/null 2>&1
+fi
+exit 0
+endef
+
+define Package/luci-app-vssr/prerm
+#!/bin/sh
+if [ -z "$${IPKG_INSTROOT}" ]; then
+     /etc/init.d/vssr disable
+     /etc/init.d/vssr stop
+fi
+exit 0
+endef
+
+$(eval $(call BuildPackage,luci-app-vssr))
