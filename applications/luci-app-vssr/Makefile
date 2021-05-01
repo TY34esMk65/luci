@@ -14,10 +14,6 @@ config PACKAGE_$(PKG_NAME)_INCLUDE_Xray
 config PACKAGE_$(PKG_NAME)_INCLUDE_Trojan
 	bool "Include Trojan"
 	default y if i386||x86_64||arm||aarch64
-	
-config PACKAGE_$(PKG_NAME)_INCLUDE_Kcptun
-	bool "Include Kcptun"
-	default n
 
 config PACKAGE_$(PKG_NAME)_INCLUDE_Xray_plugin
 	bool "Include Shadowsocks Xray Plugin"
