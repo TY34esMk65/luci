@@ -37,18 +37,19 @@ config PACKAGE_$(PKG_NAME)_INCLUDE_Shadowsocks_Rust
 config PACKAGE_$(PKG_NAME)_INCLUDE_ShadowsocksR
 	bool "Include ShadowsocksR"
 	default y
-	select PACKAGE_shadowsocksr-libev-alt
 	select PACKAGE_shadowsocksr-libev-ssr-local
+	select PACKAGE_shadowsocksr-libev-ssr-redir
 
 config PACKAGE_$(PKG_NAME)_INCLUDE_ShadowsocksR_Server
 	bool "Include ShadowsocksR Server"
 	default y
-	select PACKAGE_shadowsocksr-libev-server
+	select PACKAGE_shadowsocksr-libev-ssr-server
 	
 config PACKAGE_$(PKG_NAME)_INCLUDE_Xray
 	bool "Include Xray"
 	default y if i386||x86_64||arm||aarch64
 	select PACKAGE_xray-core
+	select PACKAGE_xray-geodata
 	
 config PACKAGE_$(PKG_NAME)_INCLUDE_Trojan_GO
 	bool "Include Trojan_GO"
